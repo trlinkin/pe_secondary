@@ -1,0 +1,17 @@
+common: &common
+    database: <%= @database %>
+    username: <%= @username %>
+    password: '<%= @password %>'
+    host: <%= @host %>
+    port: <%= @port %>
+    adapter: <%= @adapter %>
+
+development:
+    <<: *common
+
+production:
+    <<: *common
+
+test:
+    database: <%= @database -%>_test
+    <<: *common
