@@ -1,7 +1,14 @@
 class pe_secondary::console(
-  $certname = $::fqdn,
+  $certname   = $::fqdn,
+  $cert_owner = 'puppet-dashboard',
+  $cert_group = 'puppet-dashboard',
   $ca_server,
 ){
+
+  File {
+    owner => $cert_owner,
+    group => $cert_group,
+  }
 
   file { '/opt/puppet/share/puppet-dashboard/certs':
     ensure => directory,
@@ -31,6 +38,20 @@ class pe_secondary::console(
 
   file { "/opt/puppet/share/puppet-dashboard/certs/pe-internal-dashboard-${certname}.ca_cert.pem": }
 
+  file_line { 'console_vhost_ca_certificate_path':
+    ensure => present,
+    line   => "    SSLCACertificateFile /opt/puppet/share/puppet-dashboard/certs/pe-internal-dashboard-${certname}.ca_cert.pem",
+    match  => '^\s*SSLCACertificateFile',
+    path    => '/etc/puppetlabs/httpd/conf.d/puppetdashboard.conf',
+  }
+
+  file_line { 'console_vhost_chain_certificate_path':
+    ensure => present,
+    line   => "    SSLCertificateChainFile /opt/puppet/share/puppet-dashboard/certs/pe-internal-dashboard-${certname}.ca_cert.pem",
+    match  => '^\s*SSLCertificateChainFile',
+    path    => '/etc/puppetlabs/httpd/conf.d/puppetdashboard.conf',
+  }
+
   file_line { 'console_ca_crl_path':
     ensure => present,
     line   => "ca_crl_path: 'certs/pe-internal-dashboard-${certname}.ca_crl.pem'",
@@ -39,6 +60,13 @@ class pe_secondary::console(
   }
 
   file { "/opt/puppet/share/puppet-dashboard/certs/pe-internal-dashboard-${certname}.ca_crl.pem": }
+
+  file_line { 'console_vhost_crl_certificate_path':
+    ensure => present,
+    line   => "    SSLCARevocationFile /opt/puppet/share/puppet-dashboard/certs/pe-internal-dashboard-${certname}.ca_crl.pem",
+    match  => '^\s*SSLCARevocationFile',
+    path    => '/etc/puppetlabs/httpd/conf.d/puppetdashboard.conf',
+  }
 
   file_line { 'console_certificate_path':
     ensure => present,
@@ -49,6 +77,13 @@ class pe_secondary::console(
 
   file { "/opt/puppet/share/puppet-dashboard/certs/pe-internal-dashboard-${certname}.cert.pem": }
 
+  file_line { 'console_vhost_certificate_path':
+    ensure => present,
+    line   => "    SSLCertificateFile /opt/puppet/share/puppet-dashboard/certs/pe-internal-dashboard-${certname}.cert.pem",
+    match  => '^\s*SSLCertificateFile',
+    path    => '/etc/puppetlabs/httpd/conf.d/puppetdashboard.conf',
+  }
+
   file_line { 'console_private_key_path':
     ensure => present,
     line   => "private_key_path: 'certs/pe-internal-dashboard-${certname}.private_key.pem'",
@@ -57,6 +92,13 @@ class pe_secondary::console(
   }
 
   file { "/opt/puppet/share/puppet-dashboard/certs/pe-internal-dashboard-${certname}.private_key.pem": }
+
+  file_line { 'console_vhost_private_certificate_path':
+    ensure => present,
+    line   => "    SSLCertificateKeyFile /opt/puppet/share/puppet-dashboard/certs/pe-internal-dashboard-${certname}.private_key.pem",
+    match  => '^\s*SSLCertificateKeyFile',
+    path    => '/etc/puppetlabs/httpd/conf.d/puppetdashboard.conf',
+  }
 
   file_line { 'console_public_key_path':
     ensure => present,
