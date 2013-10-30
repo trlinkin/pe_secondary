@@ -1,4 +1,4 @@
-class pe_secondary::console::puppet_db_authorization (
+class pe_secondary::console::authorization (
   $console_cn           = 'pe-internal-dashboard',
   $additional_acl_allow = [],
 ){

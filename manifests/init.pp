@@ -1,11 +1,11 @@
-class pe_secondary_master (
+class pe_secondary (
   $primary_cname,
   $change_filebucket      = true,
   $add_puppetdb_whitelist = true,
 ){
 
   augeas { 'puppet.conf_ca':
-    context => '/files/etc/puppetlabs/puppet/puppet.conf'
+    context => '/files/etc/puppetlabs/puppet/puppet.conf',
     changes => [
       'set master/ca false',
       "set agent/ca_server ${primary_cname}",
@@ -14,7 +14,7 @@ class pe_secondary_master (
 
   file_line { 'pe-httpd_revocation':
     ensure => present,
-    match  => '    SSLCARevocationFile     /etc/puppetlabs/puppet/ssl/ca/ca_crl.pem',
+    match  => 'SSLCARevocationFile',
     line   => '    SSLCARevocationFile     /etc/puppetlabs/puppet/ssl/crl.pem',
     path   => '/etc/puppetlabs/httpd/conf.d/puppetmaster.conf',
   }

@@ -7,7 +7,7 @@ class pe_secondary::console::database(
   $password,
 ){
 
-  file { '/etc/puppetlabs/puppet-dashboard/database.yml',
+  file { '/etc/puppetlabs/puppet-dashboard/database.yml':
     ensure  => file,
     content => template('pe_secondary/database.yml.erb'),
   }
