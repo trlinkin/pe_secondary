@@ -8,7 +8,7 @@ class pe_secondary (
     context => '/files/etc/puppetlabs/puppet/puppet.conf',
     changes => [
       'set master/ca false',
-      "set agent/ca_server ${primary_cname}",
+      "set main/ca_server ${primary_cname}",
       ],
   }
 
