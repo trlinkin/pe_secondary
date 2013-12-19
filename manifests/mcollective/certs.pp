@@ -2,7 +2,9 @@ class pe_secondary::mcollective::certs (
   $primary_node_name,
 ){
 
-  unless $::certname == $primary_node_name {
+  # If the master we're contacting is the primary, then we want its mcollective certs
+  # this allows us to bootstrap new masters off a primary
+  unless $::servername == $primary_node_name {
 
     # Private Keys
     file { 'pe_internal_broker':
