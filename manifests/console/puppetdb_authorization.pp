@@ -1,4 +1,4 @@
-class pe_secondary::console::authorization (
+class pe_secondary::console::puppetdb_authorization (
   $console_cn = "pe-internal-dashboard-${::pe_secondary::params::console_name}",
 ){
 
@@ -6,7 +6,7 @@ class pe_secondary::console::authorization (
     ensure => present,
     line   => $console_cn,
     path   => '/etc/puppetlabs/puppetdb/certificate-whitelist',
-    tags   => ['puppetdb_whitelist']
+    tag    => ['puppetdb_whitelist']
   }
 
 }

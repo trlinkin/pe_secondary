@@ -1,7 +1,7 @@
 class pe_secondary (
   $primary_cname,
-  $change_filebucket      = true,
-  $add_puppetdb_whitelist = true,
+  $change_filebucket         = true,
+  $export_puppetdb_whitelist = true,
 ){
 
   augeas { 'puppet.conf_ca':
@@ -28,11 +28,12 @@ class pe_secondary (
     }
   }
 
-  if $add_puppetdb_whitelist {
-    file_line { 'puppetdb_whitelist_master':
+  if $export_puppetdb_whitelist {
+    @@file_line { 'puppetdb_whitelist_master':
       ensure => present,
       line   => $clientcert,
       path   => '/etc/puppetlabs/puppetdb/certificate-whitelist',
+      tag    => ['puppetdb_whitelist'],
     }
   }
 }
