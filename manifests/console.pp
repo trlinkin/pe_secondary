@@ -4,7 +4,7 @@ class pe_secondary::console(
   $cert_group       = 'puppet-dashboard',
   $inventory_server = $::fqdn,
   $ca_server,
-){
+) inherits pe_secondary::params {
 
   File {
     owner => $cert_owner,
@@ -119,18 +119,21 @@ class pe_secondary::console(
 
   exec { 'create_console_keys':
     command => '/opt/puppet/bin/rake -f /opt/puppet/share/puppet-dashboard/Rakefile RAILS_ENV=production cert:create_key_pair',
+    cwd     => '/opt/puppet/share/puppet-dashboard', 
     creates => "/opt/puppet/share/puppet-dashboard/certs/pe-internal-dashboard-${console_name}.public_key.pem",
     require => [ File_line['console_private_key_path', 'console_public_key_path', 'console_ca_server' ]],
   }
 
   exec { 'request_console_certs':
     command => '/opt/puppet/bin/rake -f /opt/puppet/share/puppet-dashboard/Rakefile RAILS_ENV=production cert:request',
+    cwd     => '/opt/puppet/share/puppet-dashboard', 
     creates => "/opt/puppet/share/puppet-dashboard/certs/pe-internal-dashboard-${console_name}.ca_cert.pem",
     require => Exec['create_console_keys'],
   }
 
   exec { 'retrieve_console_certs':
     command => '/opt/puppet/bin/rake -f /opt/puppet/share/puppet-dashboard/Rakefile RAILS_ENV=production cert:retrieve',
+    cwd     => '/opt/puppet/share/puppet-dashboard', 
     creates => "/opt/puppet/share/puppet-dashboard/certs/pe-internal-dashboard-${console_name}.cert.pem",
     require => Exec['request_console_certs'],
   }
