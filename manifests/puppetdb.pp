@@ -1,4 +1,4 @@
-class pe_secondar::puppetdb (
+class pe_secondary::puppetdb (
 
 ){
 
