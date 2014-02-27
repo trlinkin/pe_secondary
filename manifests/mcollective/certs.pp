@@ -6,6 +6,31 @@ class pe_secondary::mcollective::certs (
   # this allows us to bootstrap new masters off a primary
   if $::servername == $primary_node_name {
 
+    # Certificates
+    file { 'pe-internal-broker-cert':
+      ensure  => file,
+      path    => '/etc/puppetlabs/puppet/ssl/certs/pe-internal-broker.pem',
+      content => file('/etc/puppetlabs/puppet/ssl/certs/pe-internal-broker.pem'),
+    }
+
+    file { 'pe-internal-puppet-console-mcollective-client-cert':
+      ensure  => file,
+      path    => '/etc/puppetlabs/puppet/ssl/certs/pe-internal-puppet-console-mcollective-client.pem',
+      content => file('/etc/puppetlabs/puppet/ssl/certs/pe-internal-puppet-console-mcollective-client.pem'),
+    }
+
+    file { 'pe-internal-mcollective-servers-cert':
+      ensure  => file,
+      path    => '/etc/puppetlabs/puppet/ssl/certs/pe-internal-mcollective-servers.pem',
+      content => file('/etc/puppetlabs/puppet/ssl/certs/pe-internal-mcollective-servers.pem'),
+    }
+
+    file { 'pe-internal-peadmin-mcollective-client-cert':
+      ensure  => file,
+      path    => '/etc/puppetlabs/puppet/ssl/certs/pe-internal-peadmin-mcollective-client.pem',
+      content => file('/etc/puppetlabs/puppet/ssl/certs/pe-internal-peadmin-mcollective-client.pem'),
+    }
+
     # Private Keys
     file { 'pe_internal_broker':
       ensure  => file,
@@ -13,7 +38,7 @@ class pe_secondary::mcollective::certs (
       content => file('/etc/puppetlabs/puppet/ssl/private_keys/pe-internal-broker.pem'),
     }
 
-      file { 'pe_internal_mcollective_servers':
+    file { 'pe_internal_mcollective_servers':
       ensure  => file,
       path    => '/etc/puppetlabs/puppet/ssl/private_keys/pe-internal-mcollective-servers.pem',
       content => file('/etc/puppetlabs/puppet/ssl/private_keys/pe-internal-mcollective-servers.pem'),
