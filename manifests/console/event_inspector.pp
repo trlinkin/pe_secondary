@@ -9,6 +9,7 @@ class pe_secondary::console::event_inspector(
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
+    path    => '/opt/puppet/share/event-inspector/config/config.yml',
     content => template('pe_secondary/event_inspector_config.yml.erb'),
   }
 }
