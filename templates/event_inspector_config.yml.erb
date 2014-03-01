@@ -1,8 +1,9 @@
-se_url: events/
+
+base_url: events/
 console_base_url: /
 puppetdb:
   pem:
     ca_file: /opt/puppet/share/puppet-dashboard/certs/pe-internal-dashboard-<%= @console_name %>.ca_cert.pem
     key: /opt/puppet/share/puppet-dashboard/certs/pe-internal-dashboard-<%= @console_name %>.private_key.pem
     cert: /opt/puppet/share/puppet-dashboard/certs/pe-internal-dashboard-<%= @console_name %>.cert.pem
-  server: <%= @puppetdb_host %>:<%= @puppetdb_port %>
+  server: https://<%= @puppetdb_host %>:<%= @puppetdb_port %>
