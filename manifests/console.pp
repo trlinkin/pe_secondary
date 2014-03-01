@@ -142,6 +142,15 @@ class pe_secondary::console(
     require => [ Exec['create_console_keys'], Exec['request_console_certs'], Exec['retrieve_console_certs'] ],
   }
 
+  if versioncmp($::pe_version, '3.2.0') >= 0 {
+    file_line { 'console.conf_certname':
+      ensure => present,
+      line   => "certificate_name = pe-internal-dashboard-${console_name}",
+      match  => 'certificate_name',
+      path   => '/etc/puppetlabs/puppet/console.conf',
+    }
+  }
+
 
   if defined('request_manager') {
     Class['pe_secondary::console'] ~> Service['pe-httpd']
