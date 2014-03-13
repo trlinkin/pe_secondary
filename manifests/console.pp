@@ -138,6 +138,11 @@ class pe_secondary::console(
     require => Exec['request_console_certs'],
   }
 
+  class { 'pe_secondary::console::event_inspector':
+    require => [ Exec['create_console_keys'], Exec['request_console_certs'], Exec['retrieve_console_certs'] ],
+  }
+
+
   if defined('request_manager') {
     Class['pe_secondary::console'] ~> Service['pe-httpd']
   }
